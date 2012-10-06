@@ -10,14 +10,8 @@ require 'rsolr'
 EXPORT_COL = "images" #エクスポート対象のコレクション名
 SOLR_URL = "http://localhost:8080/solr"
 
-if ARGV.size < 1
-  puts "Usage: #{$0} DB_NAME [option]"
-  puts "--delete Delete all indexes"
-  exit(0)
-end
-
 # --deleteオプションが付いていたら、Solr上の全indexを削除する
-if ARGV[1] == "--delete"
+if ARGV.index("--delete")
   puts "Are you sure to delete all indexes? [y,n]"
   answer = STDIN.gets
   if answer == "y\n" || answer == "yes\n"
@@ -26,6 +20,12 @@ if ARGV[1] == "--delete"
     solr.commit
     puts "Deleted all indexes"
   end
+  exit(0)
+end
+
+if ARGV.size != 1
+  puts "Usage: #{$0} DB_NAME [option]"
+  puts "--delete Delete all indexes"
   exit(0)
 end
 
